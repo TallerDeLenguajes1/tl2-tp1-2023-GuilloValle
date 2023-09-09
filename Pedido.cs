@@ -16,10 +16,13 @@ public class Pedido
 
     private EstadoPedido estado;
 
+    private Cadete cadete;
+
     public int NroPedido { get => nroPedido;}
     public string ObservacionPedido { get => observacionPedido; }
     
     public EstadoPedido Estado { get => estado; set => estado = value; }
+    public Cadete Cadete { get => cadete; set => cadete = value; }
 
     public Pedido(int nroPedido, string observacionPedido,string nombreCliente,string direccionCliente,long telefonoCliente, string datosReferencia, EstadoPedido estado)
     {

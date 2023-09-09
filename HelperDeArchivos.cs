@@ -2,25 +2,11 @@ using GestionPedidos;
 
 public class HelperDeArchivo
 {
-    private List<Pedido> pedidosIngresados;
 
-    public HelperDeArchivo()
-    {
-        pedidosIngresados = new List<Pedido>();
-    }
 
-    public List<Pedido> PedidosIngresados { get => pedidosIngresados; set => pedidosIngresados = value; }
+    
 
-    public  void DarDeAltaPedidio(int nroPedido, string observacionPedido,string nombreCliente,string direccionCliente,long telefonoCliente, string datosReferencia, EstadoPedido estado)
-    {
-        var pedido = new Pedido(nroPedido,observacionPedido,nombreCliente,direccionCliente,telefonoCliente,datosReferencia,EstadoPedido.Ingresado);
-        pedidosIngresados.Add(pedido);
-    }
-
-    public Pedido BuscarEnIngresados(int nroPedido)
-    {
-        return pedidosIngresados.Find(pedido => pedido.NroPedido == nroPedido);   
-    }
+    
 
     public bool ExisteArchivo(string rutaArchivo)
     {
@@ -58,7 +44,7 @@ public class HelperDeArchivo
                     string direccion = datosCadete[2];
                     long telefono = long.Parse(datosCadete[3]);
 
-                    cadetes.Add(new Cadete(id,nombre,direccion,telefono, new List<Pedido>()));
+                    cadetes.Add(new Cadete(id,nombre,direccion,telefono));
                 
                 }
             }
@@ -77,7 +63,7 @@ public class HelperDeArchivo
             string nombre = datosCadeteria[0];
             long telefono = long.Parse(datosCadeteria[1]);
             
-            cadeteria = new Cadeteria(nombre,telefono, new List<Cadete>());
+            cadeteria = new Cadeteria(nombre,telefono);
         }
 
         return cadeteria;

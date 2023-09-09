@@ -1,28 +1,80 @@
+using System.Data.Common;
+
 namespace GestionPedidos;
 
 public class Cadeteria
 {
+    const int PRECIO_ENVIO = 500;
     private string nombre;
     private double telefono;
     private List<Cadete> cadetes;
 
-    public Cadeteria(string nombre, double telefono, List<Cadete> cadetes)
-    {
-        this.nombre = nombre;
-        this.telefono = telefono;
-        this.cadetes = cadetes;
-    }
+    private List<Pedido> pedidos;
+
+    
 
     public string Nombre { get => nombre;}
     public double Telefono { get => telefono;}
     public List<Cadete> Cadetes { get => cadetes; set => cadetes = value; }
 
-    private Cadete BuscarCadeteXId(int idCadete)
+/*--------------------------------------------------------------------------------------------*/
+
+     public void cambiarEstadoPedido(int nroPedido, EstadoPedido nuevoEstado)
     {
-        return cadetes.Find(cadete => cadete.Id == idCadete);
+        var pedidoAcambiarEstado = pedidos.Find(pedido => pedido.NroPedido == nroPedido);
+        pedidoAcambiarEstado.Estado=nuevoEstado;
+    }   
+    public Pedido BuscarEnIngresados(int nroPedido)
+    {
+        return pedidos.Find(pedido => pedido.NroPedido == nroPedido);   
+    }
+    public  void DarDeAltaPedidio(int nroPedido, string observacionPedido,string nombreCliente,string direccionCliente,long telefonoCliente, string datosReferencia)
+    {
+        var pedido = new Pedido(nroPedido,observacionPedido,nombreCliente,direccionCliente,telefonoCliente,datosReferencia,EstadoPedido.Ingresado);
+        pedidos.Add(pedido);
+    }
+    public void AsignarCadeteAPedido(int idPedido, int idCadete){
+
+        var cad = cadetes.Find(cadete => cadete.Id == idCadete);
+        var ped = pedidos.Find(pedido => pedido.NroPedido == idPedido);
+        ped.Cadete = cad;
     }
 
-    private Pedido BuscarPededido(int nroPedido)
+
+    public double JornalACobrar(int idCadete)
+    {
+        return CantidadPedidosEntregados(idCadete)*PRECIO_ENVIO;
+    }
+    
+    public int CantidadPedidosEntregados(int idCadete)
+    {
+        int cantPedidos = 0;
+        foreach (var pedido in pedidos)
+        {
+            if (pedido.Cadete.Id == idCadete && pedido.Estado == EstadoPedido.Entregado )
+            {
+                cantPedidos++;
+            }
+        }
+        return cantPedidos;
+    }
+
+    // private Cadete BuscarCadeteXId(int idCadete)
+    // {
+    //     return cadetes.Find(cadete => cadete.Id == idCadete);
+    // }
+
+    public Cadeteria(string nombre, double telefono)
+    {
+        this.nombre = nombre;
+        this.telefono = telefono;
+        pedidos = new List<Pedido>();
+        cadetes = new List<Cadete>(); 
+        
+    }
+
+
+    /*private Pedido BuscarPededido(int nroPedido)
     {
         Pedido pedidoBuscado = null;
 
@@ -38,9 +90,9 @@ public class Cadeteria
         }
 
         return pedidoBuscado;
-    }
+    }*/
 
-    private int GetIdCadeteXPedido(int nroPedido)
+   /* private int GetIdCadeteXPedido(int nroPedido)
     {
         int idCadete1=0;
 
@@ -55,18 +107,18 @@ public class Cadeteria
             }
         }
         return idCadete1;
-    }
+    }*/
 
-    public void AsignarPedidoCadete(int idCadete, Pedido pedido)
+   /* public void AsignarPedidoCadete(int idCadete, Pedido pedido)
     {
         var cadete = cadetes.Find(cadete => cadete.Id == idCadete); // es una forma mas pro de buscar objetos en una lista que usar el forech (principiantes)
         if (cadete != null)
         {
             cadete.RecibirPedido(pedido);
         }
-    }
+    }*/
 
-    public void CambiarEstado(int nroPedido,EstadoPedido nuevoEstado)
+    /*public void CambiarEstado(int nroPedido,EstadoPedido nuevoEstado)
     {
 
         var PedidoAcambiarEstdo = BuscarPededido(nroPedido);
@@ -75,9 +127,9 @@ public class Cadeteria
         {
            PedidoAcambiarEstdo.Estado = nuevoEstado; 
         } 
-    }
+    }*/
 
-    public void ReasignarPedidoCadete(int idCadete2, int nroPedido) // idCadete1 : cadete que tiene el pedido || idCadete2: cadete al que le asignare el pedido
+   /* public void ReasignarPedidoCadete(int idCadete2, int nroPedido) // idCadete1 : cadete que tiene el pedido || idCadete2: cadete al que le asignare el pedido
     {
         
         var pedido1 = BuscarPededido(nroPedido);
@@ -92,7 +144,7 @@ public class Cadeteria
         cadete1.EliminarPedido(pedido1);
 
 
-    }
+    }*/
 
  
 

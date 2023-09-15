@@ -29,11 +29,12 @@
                 {
                     Console.WriteLine("Ingrese una opcion:");
                     inputMenu = Console.ReadLine();
-                } while (string.IsNullOrEmpty(inputMenu));
+                    bool resultado  = int.TryParse(inputMenu , out opcionMenu);
+                } while (opcionMenu < 1 && opcionMenu < 5);
                 
-                bool resultado  = int.TryParse(inputMenu , out opcionMenu);
+                
 
-                if ( resultado &&  1<= opcionMenu && opcionMenu<=5 )
+                if ( 1 <= opcionMenu && opcionMenu <= 5 )
                 {
                     switch (opcionMenu)
                     {
@@ -155,6 +156,7 @@
                             break;
                     }
                 }
+              
             }
             Informes.InformeFinalJornada(cadeteria.Cadetes);
 

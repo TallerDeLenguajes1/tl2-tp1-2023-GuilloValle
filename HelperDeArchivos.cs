@@ -26,7 +26,7 @@ public class HelperDeArchivo
     {
         if (File.Exists(rutaArchivo))
         {
-            var info = new FileInfo(rutaArchivo);
+            var info = new FileInfo(rutaArchivo); 
 
             if (info.Length > 0)
             {

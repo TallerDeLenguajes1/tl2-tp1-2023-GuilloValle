@@ -71,8 +71,8 @@ public class HelperDeArchivo
 
         if (ExisteArchivo(rutaDatosCadeteria))
         {
-            string[] linea = File.ReadAllLines(rutaDatosCadeteria);
-            string primeraLinea = linea[0];
+            string[] linea = File.ReadAllLines(rutaDatosCadeteria); //Leo todas las lineas
+            string primeraLinea = linea[0]; //Cada elemento del array es una linea
             string[] datosCadeteria = primeraLinea.Split(',');
             string nombre = datosCadeteria[0];
             long telefono = long.Parse(datosCadeteria[1]);

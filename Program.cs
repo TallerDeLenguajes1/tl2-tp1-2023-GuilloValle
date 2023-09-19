@@ -10,9 +10,10 @@
             bool programaEnUso = true;
         
 
-            var Helper = new HelperDeArchivo();
+            var Helper = new AccesoADatos();
             var cadeteria = Helper.CrearCadeteria(rutaDatosCadeteria);
             Helper.CargarListaCadetes(rutaDatosCadetes,cadeteria.Cadetes);
+
 
             Console.WriteLine(cadeteria.Nombre);
 
@@ -29,11 +30,12 @@
                 {
                     Console.WriteLine("Ingrese una opcion:");
                     inputMenu = Console.ReadLine();
-                } while (string.IsNullOrEmpty(inputMenu));
+                    bool resultado  = int.TryParse(inputMenu , out opcionMenu);
+                } while (opcionMenu < 1 && opcionMenu < 5);
                 
-                bool resultado  = int.TryParse(inputMenu , out opcionMenu);
+                
 
-                if ( resultado &&  1<= opcionMenu && opcionMenu<=5 )
+                if (1<= opcionMenu && opcionMenu<=5 )
                 {
                     switch (opcionMenu)
                     {
@@ -62,7 +64,7 @@
 
                             if (resultadoNroPedido && resultadoTel)
                             {
-                                Helper.DarDeAltaPedidio(nroPedido,observacionPedido,nombreCliente,direccionCliente,telefonoCliente,datosReferenciaDireccion, EstadoPedido.Ingresado);
+                                cadeteria.DarDeAltaPedidio(nroPedido,observacionPedido,nombreCliente,direccionCliente,telefonoCliente,datosReferenciaDireccion);
                                 Console.WriteLine("Pedido ingresado con exito!\n");
                             }else
                             {
@@ -70,84 +72,103 @@
                             }
                             break;
                         case 2:
-                            //controlar que un pedido no este aginado previamente
-                            int idCadete;
-
-                            Console.WriteLine("Ingrese el ID del cadete a asignar pedido:");
-                                string inputIdCadete = Console.ReadLine();
-
-                            Console.WriteLine("Ingrese el Nro del pedido:");
-                                inputNroPedido = Console.ReadLine();
                             
-                            bool resultadoIdCadete = int.TryParse(inputIdCadete,out idCadete);
-                            resultadoNroPedido = int.TryParse(inputNroPedido,out nroPedido);
-
-                            if (resultadoNroPedido && resultadoIdCadete)
+                            int idCadete;
+                            if (cadeteria.Pedidos.Count() >= 1)
                             {
-                                var pedido = Helper.BuscarEnIngresados(nroPedido);
-                                cadeteria.AsignarPedidoCadete(idCadete,pedido);
-                                Console.WriteLine("Pedido asignado con exito!");
-                            }else
-                            {
-                                if (resultadoNroPedido)
-                                {
-                                    Console.WriteLine("----- No se encontro pedido -----");
+    
+                                Console.WriteLine("Ingrese el ID del cadete a asignar pedido:");
+                                    string inputIdCadete = Console.ReadLine();
+    
+                                Console.WriteLine("Ingrese el Nro del pedido:");
+                                    inputNroPedido = Console.ReadLine();
+                                
+                                bool resultadoIdCadete = int.TryParse(inputIdCadete,out idCadete);
+                                resultadoNroPedido = int.TryParse(inputNroPedido,out nroPedido);
+    
+                                if (resultadoNroPedido && resultadoIdCadete) //Controlo que se casteo bien
+                                {   
+                                        var pedido = cadeteria.BuscarEnIngresados(nroPedido); //COMO HAGO PARA PASARLE DIRECTAMENTE EL NRO DE PEDIDO
+                                        cadeteria.AsignarCadeteAPedido(pedido.NroPedido,idCadete);
+                                        Console.WriteLine("Pedido asignado con exito!");
+                            
                                 }else
                                 {
-                                    Console.WriteLine("----- No se encontro el cadete -----");
+                                    if (resultadoNroPedido)
+                                    {
+                                        Console.WriteLine("----- Ingrese correctamente el nro de pedido -----");
+                                    }else
+                                    {
+                                        Console.WriteLine("----- Ingrese correctamente el nro de cadete -----");
+                                    }
                                 }
+                            }else
+                            {
+                                System.Console.WriteLine("No se ingresó ningun pedido aún");
                             }
                             break;
                         case 3:
                             int numeroEstado;
 
-                            Console.WriteLine("Ingrese el Nro del pedido:");
-                                inputNroPedido = Console.ReadLine();
-
-                            Console.WriteLine("Seleccione el nuevo estado:\n1-Entregado\n2-En Camino\n3-Cancelado");
-                                string inputNumeroEstado = Console.ReadLine();
-
-                            resultadoNroPedido = int.TryParse(inputNroPedido,out nroPedido);
-                            bool resultadoNumeroEstado = int.TryParse(inputNumeroEstado,out numeroEstado);
-
-                            if (resultadoNroPedido && resultadoNumeroEstado && 1 <= numeroEstado && numeroEstado<=3)
+                            if (cadeteria.Pedidos.Count() >= 1)
                             {
-                                EstadoPedido nuevoEstado = (EstadoPedido)numeroEstado;
-                                cadeteria.CambiarEstado(nroPedido,nuevoEstado);
-                                Console.WriteLine("Estado del pedido cambiado con exito!");
-                            }else
-                            {
-                                if (resultadoNroPedido)
+                                Console.WriteLine("Ingrese el Nro del pedido:");
+                                    inputNroPedido = Console.ReadLine();
+    
+                                Console.WriteLine("Seleccione el nuevo estado:\n1-Entregado\n2-En Camino\n3-Cancelado");
+                                    string inputNumeroEstado = Console.ReadLine();
+    
+                                resultadoNroPedido = int.TryParse(inputNroPedido,out nroPedido);
+                                bool resultadoNumeroEstado = int.TryParse(inputNumeroEstado,out numeroEstado);
+    
+                                if (resultadoNroPedido && resultadoNumeroEstado && 1 <= numeroEstado && numeroEstado<=3)
                                 {
-                                    Console.WriteLine("No se encontro pedido");
+                                    EstadoPedido nuevoEstado = (EstadoPedido)numeroEstado;
+                                    cadeteria.cambiarEstadoPedido(nroPedido,nuevoEstado);
+                                    Console.WriteLine("Estado del pedido cambiado con exito!");
                                 }else
                                 {
-                                    Console.WriteLine("Ingreso un estado invalido");
+                                    if (resultadoNroPedido)
+                                    {
+                                        Console.WriteLine("No se encontro pedido");
+                                    }else
+                                    {
+                                        Console.WriteLine("Ingreso un estado invalido");
+                                    }
                                 }
+                            }else
+                            {
+                                System.Console.WriteLine("No se ingresó ningun pedido aún");
                             }
                             break;
                         case 4:
-                            Console.WriteLine("Ingrese el Nro del pedido:");
-                                inputNroPedido = Console.ReadLine();
-                            Console.WriteLine("Ingrese el ID del cadete a reasignar pedido:");
-                                inputIdCadete = Console.ReadLine();
-                            
-                            resultadoNroPedido = int.TryParse(inputNroPedido,out nroPedido);
-                            resultadoIdCadete = int.TryParse(inputIdCadete,out idCadete);
-
-                            if (resultadoNroPedido && resultadoIdCadete)
+                           if (cadeteria.Pedidos.Count() >= 1)
+                           {
+                             Console.WriteLine("Ingrese el Nro del pedido:");
+                                 inputNroPedido = Console.ReadLine();
+                             Console.WriteLine("Ingrese el ID del cadete a reasignar pedido:");
+                                string inputIdCadete = Console.ReadLine();
+                             
+                             resultadoNroPedido = int.TryParse(inputNroPedido,out nroPedido);
+                             bool resultadoIdCadete = int.TryParse(inputIdCadete,out idCadete);
+ 
+                             if (resultadoNroPedido && resultadoIdCadete)
+                             {
+                             cadeteria.ReasignarPedidoCadete(idCadete,nroPedido);
+                             Console.WriteLine("Pedido reasignado con exito!");
+                             }else
+                             {
+                                 if (resultadoNroPedido)
+                                 {
+                                     Console.WriteLine("----- No se encontro pedido -----");
+                                 }else
+                                 {
+                                     Console.WriteLine("----- No se encontro el cadete -----");
+                                 }
+                             }
+                           }else
                             {
-                            cadeteria.ReasignarPedidoCadete(idCadete,nroPedido);
-                            Console.WriteLine("Pedido reasignado con exito!");
-                            }else
-                            {
-                                if (resultadoNroPedido)
-                                {
-                                    Console.WriteLine("----- No se encontro pedido -----");
-                                }else
-                                {
-                                    Console.WriteLine("----- No se encontro el cadete -----");
-                                }
+                                System.Console.WriteLine("No se ingresó ningun pedido aún");
                             }
                             break;
                         case 5:

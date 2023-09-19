@@ -16,28 +16,36 @@ public class Cadeteria
     public string Nombre { get => nombre;}
     public double Telefono { get => telefono;}
     public List<Cadete> Cadetes { get => cadetes; set => cadetes = value; }
+    public List<Pedido> Pedidos { get => pedidos; set => pedidos = value; }
 
-/*--------------------------------------------------------------------------------------------*/
+    /*--------------------------------------------------------------------------------------------*/
 
-     public void cambiarEstadoPedido(int nroPedido, EstadoPedido nuevoEstado)
+    public void cambiarEstadoPedido(int nroPedido, EstadoPedido nuevoEstado)
     {
-        var pedidoAcambiarEstado = pedidos.Find(pedido => pedido.NroPedido == nroPedido);
+        var pedidoAcambiarEstado = Pedidos.Find(pedido => pedido.NroPedido == nroPedido);
         pedidoAcambiarEstado.Estado=nuevoEstado;
     }   
     public Pedido BuscarEnIngresados(int nroPedido)
     {
-        return pedidos.Find(pedido => pedido.NroPedido == nroPedido);   
+        return Pedidos.Find(pedido => pedido.NroPedido == nroPedido);   
     }
     public  void DarDeAltaPedidio(int nroPedido, string observacionPedido,string nombreCliente,string direccionCliente,long telefonoCliente, string datosReferencia)
     {
         var pedido = new Pedido(nroPedido,observacionPedido,nombreCliente,direccionCliente,telefonoCliente,datosReferencia,EstadoPedido.Ingresado);
-        pedidos.Add(pedido);
+        Pedidos.Add(pedido);
     }
     public void AsignarCadeteAPedido(int idPedido, int idCadete){
 
         var cad = cadetes.Find(cadete => cadete.Id == idCadete);
-        var ped = pedidos.Find(pedido => pedido.NroPedido == idPedido);
-        ped.Cadete = cad;
+        var ped = Pedidos.Find(pedido => pedido.NroPedido == idPedido);
+        if (cad != null && ped != null)
+        {
+            ped.Cadete = cad;
+        }else
+        {
+            System.Console.WriteLine("No se pudo asignar cadete a pedido solicitado");
+        }
+        
     }
 
 
@@ -49,7 +57,7 @@ public class Cadeteria
     public int CantidadPedidosEntregados(int idCadete)
     {
         int cantPedidos = 0;
-        foreach (var pedido in pedidos)
+        foreach (var pedido in Pedidos)
         {
             if (pedido.Cadete.Id == idCadete && pedido.Estado == EstadoPedido.Entregado )
             {
@@ -57,6 +65,19 @@ public class Cadeteria
             }
         }
         return cantPedidos;
+    }
+
+    public void ReasignarPedidoCadete(int idPedido, int idCadete){
+
+        var cadeteBuscado = cadetes.Find(cadete => cadete.Id == idCadete);
+        var pedidoBuscado = Pedidos.Find(pedido => pedido.NroPedido == idPedido);
+        if (cadeteBuscado != null && pedidoBuscado != null)
+        {
+            pedidoBuscado.Cadete = cadeteBuscado;
+        }else
+        {
+            System.Console.WriteLine("No se pudo asignar pedido a cadete solicitado");
+        }
     }
 
     // private Cadete BuscarCadeteXId(int idCadete)
@@ -68,11 +89,14 @@ public class Cadeteria
     {
         this.nombre = nombre;
         this.telefono = telefono;
-        pedidos = new List<Pedido>();
+        Pedidos = new List<Pedido>();
         cadetes = new List<Cadete>(); 
         
     }
 
+
+
+    
 
     /*private Pedido BuscarPededido(int nroPedido)
     {

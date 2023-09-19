@@ -1,13 +1,7 @@
 using GestionPedidos;
 
-public class HelperDeArchivo
+public class AccesoADatos
 {
-
-
-    
-
-    
-
     public bool ExisteArchivo(string rutaArchivo)
     {
         if (File.Exists(rutaArchivo))

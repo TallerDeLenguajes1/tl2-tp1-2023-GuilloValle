@@ -8,6 +8,7 @@
             string inputMenu;
             int opcionMenu;
             bool programaEnUso = true;
+
         
 
             var Helper = new AccesoADatos();
@@ -177,7 +178,7 @@
                     }
                 }
             }
-            Informes.InformeFinalJornada(cadeteria.Cadetes);
+            Informes.InformeFinalJornada(cadeteria);
 
         }
 

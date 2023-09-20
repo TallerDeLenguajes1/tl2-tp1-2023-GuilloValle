@@ -67,6 +67,7 @@ public class Cadeteria
         return cantPedidos;
     }
 
+
     public void ReasignarPedidoCadete(int idPedido, int idCadete){
 
         var cadeteBuscado = cadetes.Find(cadete => cadete.Id == idCadete);
@@ -80,10 +81,7 @@ public class Cadeteria
         }
     }
 
-    // private Cadete BuscarCadeteXId(int idCadete)
-    // {
-    //     return cadetes.Find(cadete => cadete.Id == idCadete);
-    // }
+
 
     public Cadeteria(string nombre, double telefono)
     {

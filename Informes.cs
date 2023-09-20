@@ -2,13 +2,13 @@ using GestionPedidos;
 
 public class Informes
 {
-    public static void InformeFinalJornada(List<Cadete> cadetes)
+    public static void InformeFinalJornada(Cadeteria cadeteria)
     {
-        var informeCadetes = cadetes.Select(cadete => new
+        var informeCadetes = cadeteria.Cadetes.Select(cadete => new
         {   Cadete = cadete, 
-            CantidadPedidosRecibidos = cadete.CantidadDePedidosRecibidos(),
-            CantidadPedidosEntregados = cadete.CantidadPedidosEntregados(),
-            MontoGanado = cadete.JornalACobrar()
+            CantidadPedidosRecibidos = cadeteria.Pedidos.Count(),
+            CantidadPedidosEntregados = cadeteria.CantidadPedidosEntregados(cadete.Id),
+            MontoGanado = cadeteria.JornalACobrar(cadete.Id)
         }).ToList();
 
         int totalPedidosRecidos = informeCadetes.Sum(infoCadete => infoCadete.CantidadPedidosRecibidos); // Pedidos recibido por cada cadete (la suma de todos los pedidos de recibido de cada cadete, son los pedidos en total de la cadeteria)

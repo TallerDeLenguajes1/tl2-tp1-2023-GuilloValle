@@ -10,7 +10,7 @@
             bool programaEnUso = true;
             int eleccion;
             Cadeteria cadeteria = null;
-
+            int nuevoBranch;
             do
             {
                 System.Console.WriteLine("Ingrese 1 para trabajar con csv y 2 con JSON");

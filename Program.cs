@@ -107,8 +107,14 @@
                                 if (resultadoNroPedido && resultadoIdCadete) //Controlo que se casteo bien
                                 {   
                                         var pedido = cadeteria.BuscarEnIngresados(nroPedido); //COMO HAGO PARA PASARLE DIRECTAMENTE EL NRO DE PEDIDO
-                                        cadeteria.AsignarCadeteAPedido(pedido.NroPedido,idCadete);
-                                        Console.WriteLine("Pedido asignado con exito!");
+                                        bool asignado = cadeteria.AsignarCadeteAPedido(pedido.NroPedido,idCadete);
+                                        if (asignado)
+                                        {
+                                            Console.WriteLine("Pedido asignado con exito!");
+                                        }else
+                                        {
+                                            Console.WriteLine("No se pudo asignar el pedido!");
+                                        }
                             
                                 }else
                                 {
@@ -172,8 +178,15 @@
  
                              if (resultadoNroPedido && resultadoIdCadete)
                              {
-                             cadeteria.ReasignarPedidoCadete(idCadete,nroPedido);
-                             Console.WriteLine("Pedido reasignado con exito!");
+                                bool reasignado = cadeteria.ReasignarPedidoCadete(idCadete,nroPedido);
+                                if (reasignado)
+                                {
+                                    Console.WriteLine("Pedido reasignado con exito!");
+                                }else
+                                {
+                                    System.Console.WriteLine("No se pudo reasignar el pedido");
+                                }
+
                              }else
                              {
                                  if (resultadoNroPedido)

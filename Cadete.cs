@@ -25,23 +25,5 @@ public class Cadete
     public long Telefono { get => telefono;}
 
 
-  
-  /*  public int CantidadDePedidosRecibidos()
-    {
-        return pedidos.Count();
-    }*/
-
-  /*  public void RecibirPedido(Pedido nuevoPedido)
-    {
-        pedidos.Add(nuevoPedido);
-    }
-    
-   */
-
-   /* public void EliminarPedido(Pedido pedido)
-    {
-        pedidos.Remove(pedido);
-    }*/
 }
 
-/* tp 2*/

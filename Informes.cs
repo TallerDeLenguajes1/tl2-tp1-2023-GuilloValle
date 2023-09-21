@@ -6,7 +6,7 @@ public class Informes
     {
         var informeCadetes = cadeteria.Cadetes.Select(cadete => new
         {   Cadete = cadete, 
-            CantidadPedidosRecibidos = cadeteria.Pedidos.Count(),
+            CantidadPedidosRecibidos = cadeteria.Pedidos.Count(pedido => pedido.Cadete == cadete),
             CantidadPedidosEntregados = cadeteria.CantidadPedidosEntregados(cadete.Id),
             MontoGanado = cadeteria.JornalACobrar(cadete.Id)
         }).ToList();

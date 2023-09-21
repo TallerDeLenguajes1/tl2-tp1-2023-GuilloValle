@@ -8,12 +8,29 @@
             string inputMenu;
             int opcionMenu;
             bool programaEnUso = true;
+            int eleccion;
+            Cadeteria cadeteria = null;
+
+            do
+            {
+                System.Console.WriteLine("Ingrese 1 para trabajar con csv y 2 con JSON");
+                string num = Console.ReadLine();
+                bool opcion = int.TryParse(num,out eleccion);
+            } while (eleccion != 1 && eleccion != 2);
 
         
-
-            var Helper = new AccesoADatos();
-            var cadeteria = Helper.CrearCadeteria(rutaDatosCadeteria);
-            Helper.CargarListaCadetes(rutaDatosCadetes,cadeteria.Cadetes);
+           if (eleccion == 1)
+            {
+                var Helper = new AccesoCSV();
+                cadeteria = Helper.CrearCadeteria(rutaDatosCadeteria);
+                Helper.CargarListaCadetes(rutaDatosCadetes, cadeteria.Cadetes);
+            }
+            else if (eleccion == 2) 
+            {
+                var Helper = new AccesoJSON();
+                cadeteria = Helper.CrearCadeteria("cadeteria.json");
+                Helper.CargarListaCadetes("cadetes.json", cadeteria.Cadetes);
+            }
 
 
             Console.WriteLine(cadeteria.Nombre);

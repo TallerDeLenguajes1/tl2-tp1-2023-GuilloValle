@@ -59,7 +59,7 @@ public class Cadeteria
         int cantPedidos = 0;
         foreach (var pedido in Pedidos)
         {
-            if (pedido.Cadete.Id == idCadete && pedido.Estado == EstadoPedido.Entregado )
+            if (pedido.Cadete?.Id == idCadete && pedido.Estado == EstadoPedido.Entregado )
             {
                 cantPedidos++;
             }
